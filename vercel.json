@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/_index.py",
+      "src": "api/outline.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/_index.py"
+      "dest": "api/outline.py"
     }
   ]
 }
