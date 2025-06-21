@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
 import requests
 from bs4 import BeautifulSoup
 
@@ -15,7 +14,7 @@ app.add_middleware(
 )
 
 @app.get("/api/outline")
-async def get_country_outline(request: Request, country: str = None):
+async def get_country_outline(country: str = None):
     """
     Fetches Wikipedia content for a given country and returns a Markdown outline of its headings.
     """
@@ -70,6 +69,3 @@ async def get_country_outline(request: Request, country: str = None):
         raise HTTPException(status_code=500, detail=f"Error fetching Wikipedia page: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
-
-# For AWS Lambda compatibility
-handler = Mangum(app)
