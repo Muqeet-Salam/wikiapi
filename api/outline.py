@@ -1,7 +1,6 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import requests
-from bs4 import BeautifulSoup
+from mangum import Mangum
 
 app = FastAPI()
 
@@ -83,3 +82,5 @@ def handler(request):
     
     response = run()
     return JSONResponse(content=response.body)
+
+handler = Mangum(app)
