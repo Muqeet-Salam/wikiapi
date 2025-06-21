@@ -4,11 +4,10 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 from bs4 import BeautifulSoup
-from mangum import Mangum  # For AWS Lambda/Vercel compatibility
+from mangum import Mangum  # Required for AWS Lambda/Vercel
 
 app = FastAPI()
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -37,5 +36,4 @@ async def get_outline(country: str = Query(..., min_length=1)):
 
     return {"outline": "\n\n".join(outline)}
 
-# Vercel adapter
-handler = Mangum(app)
+handler = Mangum(app)  # ✅ required for Vercel
