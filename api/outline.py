@@ -1,6 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
+import requests
+from bs4 import BeautifulSoup
 
 app = FastAPI()
 
@@ -69,18 +71,5 @@ async def get_country_outline(request: Request, country: str = None):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
-# For Vercel serverless compatibility
-def handler(request):
-    from fastapi import Request
-    from fastapi.responses import JSONResponse
-    
-    req = Request(scope=request)
-    country = req.query_params.get("country")
-    
-    async def run():
-        return await get_country_outline(req, country)
-    
-    response = run()
-    return JSONResponse(content=response.body)
-
+# For AWS Lambda compatibility
 handler = Mangum(app)
